@@ -14,7 +14,7 @@ The simulation below demonstrates a successful **Write-then-Read** transaction.
 1.  **Write:** Data `0xCAFEBABE` is written to Address `0x0`.
 2.  **Read:** The same address is read back, confirming data integrity.
 
-![Waveform Verification](docs/waveform_verification.png)
+
 
 ## Folder Structure
 * `rtl/`: Synthesizeable design files (Master & Slave).
