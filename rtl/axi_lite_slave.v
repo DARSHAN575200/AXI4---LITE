@@ -36,6 +36,7 @@ module axi_lite_slave (
     reg[31:0] slv_reg3;
 
     reg[3:0] axi_araddr;
+    reg[3:0] axi_awaddr;
 
     always @(posedge aclk ) begin
         //f the Reset button is pressed (Active Low), it forces your "Ready" signals to 0
@@ -43,12 +44,16 @@ module axi_lite_slave (
             awready<=0;
             wready<=0;
         end else begin
-            if((awvalid==1) && (awready==0) && (wvalid==1))begin
-                awready<=1;
-                wready<=1;
+            if (awvalid && !awready) begin
+                awready <= 1;
+                axi_awaddr <= awaddr; 
             end else begin
-                awready<=0;
-                wready<=0;
+                awready <= 0;
+            end
+            if (wvalid && !wready) begin
+                wready <= 1;
+            end else begin
+                wready <= 0;
             end
         end
     end
@@ -61,7 +66,7 @@ always @(posedge aclk ) begin
         slv_reg2<=0;
         slv_reg3<=0;
     end else begin
-        if((awvalid ==1) && (awready==1) && (wready==1) && (wvalid==1)) begin
+       if (wvalid && wready) begin
             case (awaddr[3:2]) // Look at bits 2 and 3 of address Bits [3:2]: These are the Index. 
             //They tell us exactly which register (0, 1, 2, or 3) we are talking to.
             2'b00    :slv_reg0 <= wdata;
@@ -80,7 +85,7 @@ end
         bvalid <= 0;
         bresp <= 0;
     end else begin
-        if(awvalid && awready && wready && wvalid && bvalid ==0) begin
+        if (wvalid && wready && !bvalid) begin    
             bvalid <= 1;
             bresp <= 2'b00;
         end else if (bvalid && bready) begin
