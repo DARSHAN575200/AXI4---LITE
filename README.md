@@ -14,6 +14,12 @@ The simulation below demonstrates a successful **Write-then-Read** transaction.
 1.  **Write:** Data `0xCAFEBABE` is written to Address `0x0`.
 2.  **Read:** The same address is read back, confirming data integrity.
 
+## System Integration (Completed)
+Successfully integrated the AXI4-Lite Master and Slave using a Top System module.
+- **Verification:** Validated using `tb_top_system.v`.
+- **Result:** Master successfully performs a Write Transaction (Address + Data) and receives a Response.
+
+
 
 
 ## Folder Structure
